@@ -1,0 +1,18 @@
+version: "3"
+services:
+  instagram:
+    image: 'chromeindocker'
+#    ports:
+#      - 8080:8080
+    environment:
+      PYTHONUNBUFFERED: 1
+    network_mode: host
+  tinder:
+    image: 'tinder_in_docker'
+#    ports:
+#      - 8000:8000
+    environment:
+      PYTHONUNBUFFERED: 1
+    network_mode: host
+    volumes:
+      - ./storage/:/usr/local/workdir/storage/
