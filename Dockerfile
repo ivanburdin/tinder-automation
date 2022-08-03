@@ -9,7 +9,7 @@ ENV running_docker=TRUE
 RUN mkdir -p /usr/local/workdir
 
 RUN apt-get -y update
-RUN apt-get install -y wget gnupg2 unzip python3-pip locales iputils-ping curl tzdata
+RUN apt-get install -y wget gnupg2 unzip python3-pip locales iputils-ping curl tzdata libpq-dev
 RUN locale-gen ru_RU.UTF-8 && dpkg-reconfigure locales
 
 ENV TZ=Europe/Moscow

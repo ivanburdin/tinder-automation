@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="f66997ce-4203-4837-b487-f35e5fbd3de3" name="ubuntu home">
+        <fileTransfer rootFolder="/home/ivan/dev/tinder-automation" accessType="SFTP" host="192.168.1.73" port="22" sshConfigId="961f2ea0-6e44-43e2-abba-f38bd017ff20" sshConfig="ivan@192.168.1.73:22:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
