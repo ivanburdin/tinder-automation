@@ -1,0 +1,29 @@
+{
+  "permit_like_hours": [
+    {"hour":  8, "like_delay_ms": 10000},
+    {"hour":  9, "like_delay_ms": 10000},
+    {"hour":  10, "like_delay_ms": 10000},
+    {"hour":  11, "like_delay_ms": 10000},
+    {"hour":  12, "like_delay_ms": 10000},
+    {"hour":  13, "like_delay_ms": 10000},
+    {"hour":  14, "like_delay_ms": 8000},
+    {"hour":  15, "like_delay_ms": 7000},
+    {"hour":  16, "like_delay_ms": 7000},
+    {"hour":  17, "like_delay_ms": 7000},
+    {"hour":  18, "like_delay_ms": 5000},
+    {"hour":  19, "like_delay_ms": 5000},
+    {"hour":  20, "like_delay_ms": 4000},
+    {"hour":  21, "like_delay_ms": 4000},
+    {"hour":  22, "like_delay_ms": 4000},
+    {"hour":  23, "like_delay_ms": 4000},
+    {"hour":  0, "like_delay_ms": 7000}
+  ],
+  "swipes_delay_multiplier": 1.8,
+  "likes_per_day_max": 10000,
+  "likes_interval_ms": 3000,
+  "log_interval_sec": 300,
+  "start_conversations_loop_interval_sec": 25,
+  "handle_conversations_loop_interval_sec": 10,
+  "tinder_send_messages_interval_sec": 5,
+  "match_ttl_hours": 24
+}
