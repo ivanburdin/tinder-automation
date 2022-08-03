@@ -1,12 +1,12 @@
 version: "3"
 services:
-  instagram:
-    image: 'chromeindocker'
-#    ports:
-#      - 8080:8080
-    environment:
-      PYTHONUNBUFFERED: 1
-    network_mode: host
+#  instagram:
+#    image: 'chromeindocker'
+##    ports:
+##      - 8080:8080
+#    environment:
+#      PYTHONUNBUFFERED: 1
+#    network_mode: host
   tinder:
     image: 'tinder_in_docker'
 #    ports:
