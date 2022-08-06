@@ -14,7 +14,7 @@ from Utils.SettingsProvider import SettingsProvider
 
 class TinderClient:
     def __init__(self):
-        self.requests_delay_ms = 2000
+        self.requests_delay_ms = 2500
         self.headers = {"Host": "api.gotinder.com",
                         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:103.0) Gecko/20100101 Firefox/103.0",
                         "Accept": "application/json",
