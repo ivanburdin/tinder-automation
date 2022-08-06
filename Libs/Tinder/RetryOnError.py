@@ -7,8 +7,8 @@ import traceback
 def retry_on_error(method):
     def wrapper(*args, **kwargs):
         attempts = 0
-        max_attempts = 50
-        retry_delay_s = 2
+        max_attempts = 100
+        retry_delay_s = 10
 
         while attempts < max_attempts:
             attempts += 1
