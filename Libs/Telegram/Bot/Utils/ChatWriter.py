@@ -20,14 +20,14 @@ class ChatWriter:
                 media_group.append(InputMediaPhoto(media=url, caption=match.pretty_conversation))
 
             try:
-                telegram_retry(self.telegram_bot_instance.bot.send_media_group,
-                               chat_id=self.telegram_bot_instance.chat_id,
-                               media=media_group[:10]
-                               )
+                # telegram_retry(self.telegram_bot_instance.bot.send_media_group,
+                #                chat_id=self.telegram_bot_instance.chat_id,
+                #                media=media_group[:10]
+                #                )
 
-                # self.telegram_bot_instance.bot.send_media_group(chat_id=self.telegram_bot_instance.chat_id,
-                #                                                 media=media_group[:10],
-                #                                                 timeout=15)
+                self.telegram_bot_instance.bot.send_media_group(chat_id=self.telegram_bot_instance.chat_id,
+                                                                media=media_group[:10],
+                                                                timeout=15)
 
             except telegram.error.BadRequest as e:
                 if 'Media_caption_too_long' in e.message:

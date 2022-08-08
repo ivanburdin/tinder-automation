@@ -12,6 +12,7 @@ from Libs.Telegram.Bot.Menu.HandlerActions.Bot.BotActions import BotActions
 from Libs.Telegram.Bot.Menu.HandlerActions.Social.MessengersActions import MessengersActions
 from Libs.Telegram.Bot.Menu.HandlerActions.Social.TinderActions import TinderActions
 from Libs.Telegram.Bot.Utils.ChatWriter import ChatWriter
+from Libs.Telegram.Bot.Utils.TimeoutRetrier import telegram_retry
 from Libs.Telegram.Client.TelegramUserClient import TelegramUserClient
 from Utils.SecretsProvider import SecretsProvider
 
@@ -45,7 +46,8 @@ class TelegramBot:
 
     def notify_telegram(self, match):
 
-        self.chat_writer.send_mediagroup(match)
+        # self.chat_writer.send_mediagroup(match)
+        telegram_retry(self.chat_writer.send_mediagroup, match=match)
         time.sleep(2)
         self.chat_writer.send_message(match)
 

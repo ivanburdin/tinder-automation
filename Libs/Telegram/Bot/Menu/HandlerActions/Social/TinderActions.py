@@ -97,7 +97,8 @@ class TinderActions:
             return
 
         if match is not None:
-            self.telegram_bot_instance.chat_writer.send_mediagroup(match)
+            # self.telegram_bot_instance.chat_writer.send_mediagroup(match)
+            telegram_retry(self.telegram_bot_instance.chat_writer.send_mediagroup, match=match)
             self.telegram_bot_instance.chat_writer.send_message(match)
 
 
