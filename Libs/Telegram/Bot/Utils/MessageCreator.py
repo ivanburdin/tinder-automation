@@ -1,6 +1,5 @@
 import json
-
-from Services.MessageProvider.MessageProvider import MessageProvider
+import re
 
 
 class MessageCreator:
@@ -8,7 +7,7 @@ class MessageCreator:
     def make_post_message(match):
 
         message = f'Name: {match.name}, BD: {match.birth_date}, age: {match.age}\n\n' \
-                  f'Bio: {match.bio}'
+                  f"Bio: {re.sub(r'[`<>]', ' ', match.bio)}"
 
         if match.instagram:
             instagrams = json.loads(match.instagram)
