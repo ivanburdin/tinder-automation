@@ -5,6 +5,7 @@ from telegram import InlineKeyboardButton, Update
 from telegram.ext import CallbackContext
 
 from Libs.Db.TinderDb import TinderDb
+from Libs.Telegram.Bot.Utils.TimeoutRetrier import telegram_retry
 
 
 class BotActions:
@@ -29,10 +30,9 @@ class BotActions:
             delete_messages_ids = list(range(buttons_message_id - photos_sent, buttons_message_id + 1))
             for id in delete_messages_ids:
                 try:
-                    self.telegram_bot_instance.bot.delete_message(chat_id=chat_id, message_id=id)
+                    telegram_retry(self.telegram_bot_instance.bot.delete_message, chat_id=chat_id, message_id=id)
                     print(f'deleted tg message {id}')
                 except Exception as e:
-                    delete_messages_ids.append(id)
                     time.sleep(0.5)
                     print(f'exception {e} while deleting tg message {id}')
 
