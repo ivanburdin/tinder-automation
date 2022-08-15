@@ -28,11 +28,11 @@ def main():
     handle_conversations.start()
     time.sleep(START_STEP_DELAY_MS / 1000)
     # #
-    # # cleanup conversations
-    cleanup_matches = threading.Thread(target=tinder.cleanup_matches)
-    #
-    cleanup_matches.start()
-    time.sleep(START_STEP_DELAY_MS / 1000)
+    # # # cleanup conversations
+    # cleanup_matches = threading.Thread(target=tinder.cleanup_matches)
+    # #
+    # cleanup_matches.start()
+    # time.sleep(START_STEP_DELAY_MS / 1000)
 
     # # swipes
     make_swipes = threading.Thread(target=tinder.make_swipes)
@@ -53,7 +53,7 @@ def main():
     begin_conversations.join()
     handle_conversations.join()
     make_swipes.join()
-    cleanup_matches.join()
+    # cleanup_matches.join()
     notification_service.join()
     log_statistics_task.join()
 
