@@ -20,6 +20,9 @@ def telegram_retry(action, **kwargs):
 
         except Exception as e:
 
+            if "Message to delete not found" in e:
+                break
+
             print(f"[telegram_retry] exception {e}")
 
             time.sleep(10)
