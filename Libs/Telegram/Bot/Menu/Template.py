@@ -10,8 +10,8 @@ class MenuTemplate:
 
     @staticmethod
     def main_menu_keyboard(match: Match):
-        cbd_delete_match = f"delete_match/{match.match_id}/{match.photos_count}"
-        cbd_continue_chat = f"continue_chat/{match.match_id}/{match.photos_count}"
+        cbd_delete_match = f"delete_m/{match.match_id}/{match.photos_count}"
+        cbd_continue_chat = f"continue_cht/{match.match_id}/{match.photos_count}"
         cbd_originals = f"originals/{match.match_id}"
         cbd_delete_post = f"delete_post/{match.match_id}/{match.photos_count}"
 

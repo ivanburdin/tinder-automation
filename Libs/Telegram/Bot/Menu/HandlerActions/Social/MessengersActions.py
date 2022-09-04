@@ -23,7 +23,7 @@ class MessengersActions:
 
         match = TinderDb.get_match(match_id)
 
-        self.telegram_bot_instance.bot_actions.cleanup_chat(match.photos_count, buttons_message_id, chat_id)
+        # self.telegram_bot_instance.bot_actions.cleanup_chat(match.photos_count, buttons_message_id, chat_id)
         self.telegram_bot_instance.telegram_client.write_telegram(match, offset)
 
         self.tinder_handler.client.send_message(match_id, MessageProvider.message_that_i_wrote_tg())
