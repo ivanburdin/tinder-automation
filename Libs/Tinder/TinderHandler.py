@@ -34,7 +34,7 @@ class TinderHandler:
                 girls = self.client.get_girls_for_likes()
                 for girl in girls:
                     self.client.set_like(girl['id'], girl['s_number'])
-                    print(f"set like to {girl['name']}")
+                    # print(f"set like to {girl['name']}")
                     time.sleep(delay_for_current_hour / 1000 * swipes_delay_multiplier)
                 StatisticsDb.increase_likes(len(girls))
 
