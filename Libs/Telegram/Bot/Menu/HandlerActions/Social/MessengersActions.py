@@ -24,34 +24,53 @@ class MessengersActions:
         match = TinderDb.get_match(match_id)
 
         # self.telegram_bot_instance.bot_actions.cleanup_chat(match.photos_count, buttons_message_id, chat_id)
+
         self.telegram_bot_instance.telegram_client.write_telegram(match, offset)
+
+        new_reply_markup = update.callback_query.message.reply_markup
+
+        def filter_and_update_buttons(button):
+            if 'telegram' not in button[0].callback_data:
+                return button
+
+            if '✅' not in button[0].text:
+                button[0].text = f'✅ {button[0].text} ✅'
+
+            return button
+
+        new_reply_markup.inline_keyboard = [filter_and_update_buttons(b) for b in new_reply_markup.inline_keyboard]
+
+        self.telegram_bot_instance.bot.edit_message_reply_markup(
+            chat_id=update.callback_query.message.chat_id,
+            message_id=update.callback_query.message.message_id,
+            reply_markup=new_reply_markup)
 
         self.tinder_handler.client.send_message(match_id, MessageProvider.message_that_i_wrote_tg())
 
         StatisticsDb.increase_social_contacts()
 
-    def write_instagram(self, update: Update, context: CallbackContext):
-        buttons_message_id = update.callback_query.message.message_id
-        chat_id = update.callback_query.message.chat_id
-
-        match_id = context.match.group().split('/')[1]
-        offset = int(context.match.group().split('/')[2])
-
-        match = TinderDb.get_match(match_id)
-
-        self.telegram_bot_instance.bot_actions.cleanup_chat(match.photos_count, buttons_message_id, chat_id)
-
-        instagram = json.loads(TinderDb.get_match_igs(match_id=match_id))[offset]['login']
-
-        self.telegram_bot_instance.instagram_client.send_message(login=instagram)
-
-        instagram_open = json.loads(TinderDb.get_match_igs(match_id=match_id))[offset]['open']
-        if instagram_open:
-            self.telegram_bot_instance.instagram_client.set_likes(login=instagram, likes=3)
-
-        self.tinder_handler.client.send_message(match_id, MessageProvider.message_that_i_wrote_ig())
-
-        StatisticsDb.increase_social_contacts()
+    # def write_instagram(self, update: Update, context: CallbackContext):
+    #     buttons_message_id = update.callback_query.message.message_id
+    #     chat_id = update.callback_query.message.chat_id
+    #
+    #     match_id = context.match.group().split('/')[1]
+    #     offset = int(context.match.group().split('/')[2])
+    #
+    #     match = TinderDb.get_match(match_id)
+    #
+    #     self.telegram_bot_instance.bot_actions.cleanup_chat(match.photos_count, buttons_message_id, chat_id)
+    #
+    #     instagram = json.loads(TinderDb.get_match_igs(match_id=match_id))[offset]['login']
+    #
+    #     self.telegram_bot_instance.instagram_client.send_message(login=instagram)
+    #
+    #     instagram_open = json.loads(TinderDb.get_match_igs(match_id=match_id))[offset]['open']
+    #     if instagram_open:
+    #         self.telegram_bot_instance.instagram_client.set_likes(login=instagram, likes=3)
+    #
+    #     self.tinder_handler.client.send_message(match_id, MessageProvider.message_that_i_wrote_ig())
+    #
+    #     StatisticsDb.increase_social_contacts()
 
     def write_whatsapp(self, update: Update, context: CallbackContext):
         match_id = context.match.group().split('/')[1]
