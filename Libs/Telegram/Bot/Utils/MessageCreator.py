@@ -6,8 +6,8 @@ class MessageCreator:
     @staticmethod
     def make_post_message(match):
 
-        message = f'Name: {match.name}, BD: {match.birth_date}, age: {match.age}\n\n' \
-                  f"Bio: {re.sub(r'[`<>]', ' ', match.bio)}"
+        message = f'{match.name}\n\n' \
+                  f"{re.sub(r'[`<>]', ' ', match.bio)}"
 
         if match.instagram:
             instagrams = json.loads(match.instagram)

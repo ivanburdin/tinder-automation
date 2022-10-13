@@ -160,19 +160,86 @@ class TinderClient:
     @retry_on_error
     def get_user_info(self, match_id):
         time.sleep(self.requests_delay_ms / 1000)
-        response = requests.get(f'https://api.gotinder.com/v2/matches/{match_id}/', headers=self.headers, timeout=1)
+        user_id = match_id.replace(self.my_id, '')
+        response = requests.get(f'https://api.gotinder.com/user/{user_id}?locale=ru', headers=self.headers, timeout=1)
         assert response.status_code == 200, f'Cannot get user info, code: {response.status_code}, content: {response.content}'
         data = response.json()
 
-        person = data['data']['person']
-        bd = person['birth_date'].split("T")[0]
+        person = data['results']
+
+        job_name = ' '.join([x['title']['name'] for x in person['jobs']]) if person.get('jobs') and person['jobs'][0].get('title') else ''
+        job_company = ' '.join([x['company']['name'] for x in person['jobs']]) if person.get('jobs') and person['jobs'][0].get('company') else ''
+
+        school = ''.join([x['name'] for x in person.get('schools', [])])
+
+        distance = person['distance_mi'] * 1.8
+
+        interests = [x['name'] for x in person['user_interests']['selected_interests']] if person.get('user_interests') else []
+
+        bd = '1901-01-01'
+        if person.get('birth_date'):
+            bd = person['birth_date'].split("T")[0]
+
         age = relativedelta(datetime.now(), datetime.strptime(bd, "%Y-%M-%d")).years
+
+        city = person['city']['name'] if person.get('city') else ''
+
+        zodiac = ''
+        smoke = ''
+        pets = ''
+
+        if person.get('selected_descriptors'):
+
+            zodiaс_set = [x for x in person['selected_descriptors'] if x['name'] == 'Знак зодиака']
+            if(zodiaс_set):
+                zodiac = zodiaс_set[0]['choice_selections'][0]['name']
+
+            smoke_set = [x for x in person['selected_descriptors'] if x['name'] == 'Курение']
+            if (smoke_set):
+                smoke = smoke_set[0]['choice_selections'][0]['name']
+
+            pets_set = [x for x in person['selected_descriptors'] if x['name'] == 'Питомцы']
+            if (pets_set):
+                pets = pets_set[0]['choice_selections'][0]['name']
+
+        bio_text = person.get('bio')
+
+        bio = ""
+
+        bio += f"Возраст: {str(age)}" if age < 100 else "Возраст: скрыт"
+
+        if job_name:
+            bio += f"\n💼 {job_name} {job_company}"
+
+        if school:
+            bio += f"\n👩‍🎓{school}"
+
+        if city:
+            bio += f"\n🏠{city}"
+
+        if distance:
+            bio += f"\n🧭 {distance} km" if person['distance_mi'] < 10000 else '\n🧭 скрыто'
+
+        if interests:
+            bio += f"\nИнтересы: {', '.join(interests)}"
+
+        if zodiac:
+            bio += f"\n✨ {zodiac}"
+
+        if smoke:
+            bio += f"\n🚬 {smoke}"
+
+        if pets:
+            bio += f"\n🙈 {pets}"
+
+        bio += f"\n\n{bio_text}" if bio_text else ''
+
         info = {'tinder_match_id': match_id,
                 'id': person['_id'],
                 'name': person['name'],
                 'birth_date': bd,
                 'age': age,
-                'bio': person.get('bio', ''),
+                'bio': bio,
                 'photos': [p['processedFiles'][0]['url'] for p in person['photos']],
                 'photos_orig': [p['url'] for p in person['photos']]}
 
