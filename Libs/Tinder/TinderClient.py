@@ -172,7 +172,7 @@ class TinderClient:
 
         school = ''.join([x['name'] for x in person.get('schools', [])])
 
-        distance = person['distance_mi'] * 1.8
+        distance = round(person['distance_mi'] * 1.8)
 
         interests = [x['name'] for x in person['user_interests']['selected_interests']] if person.get('user_interests') else []
 
