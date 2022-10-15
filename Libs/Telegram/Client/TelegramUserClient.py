@@ -82,4 +82,4 @@ class TelegramUserClient:
                     self.client.send_message(c.users[0], message)
 
                     if message != messages[-1]:
-                        time.sleep(5)
+                        time.sleep(3)
