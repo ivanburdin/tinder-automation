@@ -30,7 +30,7 @@ class ChatWriter:
                                                                 timeout=15)
 
             except telegram.error.BadRequest as e:
-                if 'Media_caption_too_long' in e.message:
+                if 'caption_too_long' in e.message:
                     print(f'Failed to send mediagroup with long caption {len(match.pretty_conversation)} symbols')
 
                     media_group = list()
