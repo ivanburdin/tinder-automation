@@ -35,7 +35,7 @@ class ChatWriter:
 
                     media_group = list()
                     for number, url in enumerate(match.photos.split('\n\n')):
-                        media_group.append(InputMediaPhoto(media=url, caption=match.pretty_conversation[-999:]))
+                        media_group.append(InputMediaPhoto(media=url, caption=match.pretty_conversation[:1023]))
                     self.telegram_bot_instance.bot.send_media_group(chat_id=self.telegram_bot_instance.chat_id,
                                                                     media=media_group[:10])
                 else:
