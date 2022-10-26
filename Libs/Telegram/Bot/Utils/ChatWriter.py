@@ -17,7 +17,10 @@ class ChatWriter:
         with self.telegram_bot_instance.chat_lock:
             media_group = list()
             for number, url in enumerate(match.photos.split('\n\n')):
-                media_group.append(InputMediaPhoto(media=url, caption=match.pretty_conversation))
+                if number == 0:
+                    media_group.append(InputMediaPhoto(media=url, caption=match.pretty_conversation))
+                else:
+                    media_group.append(InputMediaPhoto(media=url))
 
             try:
                 # telegram_retry(self.telegram_bot_instance.bot.send_media_group,
