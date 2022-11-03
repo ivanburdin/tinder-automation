@@ -5,17 +5,19 @@ class TextAnalyzer:
 
     @staticmethod
     def try_parse_login(strings):
-        all_data = ''.join(strings)
-
-        cleared = re.sub(r'instagram|telegram|whatsapp|inst|tik|tok|http|https|[() ,;:-@]|/|\||\\',
-                         ' ',
-                         all_data,
-                         flags=re.IGNORECASE)
 
         found_contacts = []
-        for result in re.findall(r'[a-z0-9_.-]{5,}', cleared, flags=re.IGNORECASE):
-            if not TextAnalyzer.try_parse_phone(result):
-                found_contacts.append(result)
+
+        for s in strings:
+
+            cleared = re.sub(r'instagram|telegram|whatsapp|inst|tik|tok|http|https|[() ,;:-@]|/|\||\\',
+                             ' ',
+                             s,
+                             flags=re.IGNORECASE)
+
+            for result in re.findall(r'[a-z0-9_.-]{5,}', cleared, flags=re.IGNORECASE):
+                if not TextAnalyzer.try_parse_phone(result):
+                    found_contacts.append(result)
 
         return list(set(found_contacts))
 
