@@ -33,8 +33,9 @@ class ChatWriter:
                                                                 timeout=15)
 
             except telegram.error.BadRequest as e:
-                if 'caption_too_long' in e.message:
-                    print(f'Failed to send mediagroup with long caption {len(match.pretty_conversation)} symbols')
+                if 'caption' in e.message:
+                    print(f'Failed to send mediagroup with long caption {len(match.pretty_conversation)} symbols,'
+                          f' caption trimmed')
 
                     media_group = list()
                     for number, url in enumerate(match.photos.split('\n\n')):
@@ -60,7 +61,6 @@ class ChatWriter:
 
                         self.telegram_bot_instance.bot.send_media_group(chat_id=self.telegram_bot_instance.chat_id,
                                                                         media=media_group[:10])
-
 
                     finally:
                         image_downloader.cleanup_tmp_dir()

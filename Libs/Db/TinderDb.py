@@ -13,14 +13,14 @@ class Match(Base):
     name = Column(String(50))
     birth_date = Column(String(50))
     age = Column(Integer)
-    bio = Column(String(500))
+    bio = Column(String(1000))
     photos = Column(String(5000))
     photos_orig = Column(String(5000))
     photos_count = Column(Integer)
     pretty_conversation = Column(String(5000))
-    instagram = Column(String(800))
-    telegram = Column(String(800))
-    whatsapp = Column(String(100))
+    instagram = Column(String(5000))
+    telegram = Column(String(5000))
+    whatsapp = Column(String(5000))
     notification_status = Column(String(50))
 
     def __repr__(self):

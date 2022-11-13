@@ -20,6 +20,12 @@ class MessageProvider:
             return messages['tinder']['notification_threshold']
 
     @staticmethod
+    def should_send_notification():
+        with open(FILE_PATH) as f:
+            messages = json.load(f)
+            return messages['tinder']['should_send_notification']
+
+    @staticmethod
     def messages_for_instagram():
         with open(FILE_PATH) as f:
             messages = json.load(f)

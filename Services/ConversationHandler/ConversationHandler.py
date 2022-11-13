@@ -27,7 +27,8 @@ class ConversationHandler:
         my_last_replica_replied = ConversationHandler._replica_was_replied(whole_conversation,
                                                                            tinder_client,
                                                                            replicas_sent_quantity)
-        if my_last_replica_replied:
+
+        if my_last_replica_replied or MessageProvider.should_send_notification():
 
             if replicas_sent_quantity >= MessageProvider.notification_threshold():
 
@@ -35,11 +36,13 @@ class ConversationHandler:
 
                     return
 
-            if (replicas_sent_quantity + 1) <= len(replicas_for_tinder):
-                '''replica indexes starts from 0 and if we already sent one replica,
-                    then we should send second replica, which index will be 1'''
+        if my_last_replica_replied and (replicas_sent_quantity + 1) <= len(replicas_for_tinder):
+            '''replica indexes starts from 0 and if we already sent one replica,
+                then we should send second replica, which index will be 1
+                here we continue chat until get contact
+                '''
 
-                tinder_client.send_message(match_id, replicas_for_tinder[replicas_sent_quantity])
+            tinder_client.send_message(match_id, replicas_for_tinder[replicas_sent_quantity])
 
     @staticmethod
     def continue_chat(tinder_client, match_id):

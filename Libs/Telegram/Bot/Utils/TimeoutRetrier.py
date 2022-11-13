@@ -21,7 +21,8 @@ def telegram_retry(action, **kwargs):
         except Exception as e:
 
             if not hasattr(e, '__iter__'):
-                break
+                time.sleep(10)
+                continue
 
             if "Message to delete not found" in e:
                 break

@@ -180,7 +180,7 @@ class TinderClient:
         if person.get('birth_date'):
             bd = person['birth_date'].split("T")[0]
 
-        age = relativedelta(datetime.now(), datetime.strptime(bd, "%Y-%M-%d")).years
+        age = relativedelta(datetime.now(), datetime.strptime(bd, "%Y-%M-%d")).years - 1
 
         city = person['city']['name'] if person.get('city') else ''
 

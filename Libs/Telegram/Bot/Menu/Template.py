@@ -2,6 +2,7 @@ import json
 
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
+from Libs.Db.EntitiesProvider import EntitiesProvider
 from Libs.Db.TinderDb import Match
 from Services.MessageProvider.MessageProvider import MessageProvider
 
@@ -22,7 +23,7 @@ class MenuTemplate:
             [InlineKeyboardButton('Delete this post', callback_data=cbd_delete_post)]]
 
         if match.telegram:
-            telegrams = json.loads(match.telegram)
+            telegrams = EntitiesProvider.get_telegram(match.telegram)
 
             if len(telegrams) == 1:
                 keyboard.append([InlineKeyboardButton(f'Tg: {telegrams[0]}', callback_data=f'telegram/{match.match_id}/0')])
@@ -44,8 +45,8 @@ class MenuTemplate:
                     ]
                 )
 
-        if match.instagram:
-            instagrams = json.loads(match.instagram)
+        # if match.instagram:
+            # instagrams = json.loads(match.instagram)
 
             # if len(instagrams) == 1:
             #     # open_instagram = 'open' if instagrams[0]["open"] else 'private'

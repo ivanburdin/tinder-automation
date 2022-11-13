@@ -16,6 +16,6 @@ class NotificationService:
             for match in matches_for_notify:
                 telegram_bot.notify_telegram(match)
                 TinderDb.push_notification_status(match)
-                time.sleep(20)
+                time.sleep(10)
 
             time.sleep(10)
