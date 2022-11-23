@@ -28,7 +28,7 @@ class ConversationHandler:
                                                                            tinder_client,
                                                                            replicas_sent_quantity)
 
-        if my_last_replica_replied or MessageProvider.should_send_notification():
+        if my_last_replica_replied or MessageProvider.should_send_notification_ignore_my_last_replica_replied():
 
             if replicas_sent_quantity >= MessageProvider.notification_threshold():
 

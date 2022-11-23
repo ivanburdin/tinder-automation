@@ -20,10 +20,10 @@ class MessageProvider:
             return messages['tinder']['notification_threshold']
 
     @staticmethod
-    def should_send_notification():
+    def should_send_notification_ignore_my_last_replica_replied():
         with open(FILE_PATH) as f:
             messages = json.load(f)
-            return messages['tinder']['should_send_notification']
+            return messages['tinder']['should_send_notification_ignore_my_last_replica_replied']
 
     @staticmethod
     def messages_for_instagram():
