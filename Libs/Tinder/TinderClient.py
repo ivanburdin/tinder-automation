@@ -15,24 +15,8 @@ from Utils.SettingsProvider import SettingsProvider
 class TinderClient:
     def __init__(self):
         self.requests_delay_ms = 2500
-        self.headers = {"Host": "api.gotinder.com",
-                        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:103.0) Gecko/20100101 Firefox/103.0",
-                        "Accept": "application/json",
-                        "Accept-Language": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3",
-                        "Accept-Encoding": "gzip, deflate, br",
-                        "Content-Type": "application/json",
-                        "app-version": "1027301",
-                        "tinder-version": "3.38.0",
-                        "x-supported-image-formats": "jpeg",
-                        "platform": "web",
-                        "X-Auth-Token": SecretsProvider.get_tinder_token(),
-                        "Origin": "https://tinder.com",
-                        "Pragma": "no-cache",
-                        "Cache-Control": "no-cache",
-                        "Referer": "https://tinder.com/",
-                        "Connection": "keep-alive",
-                        "TE": "Trailers"}
-
+        self.headers = SettingsProvider.get_tinder_headers()
+        self.headers.update({"X-Auth-Token": SecretsProvider.get_tinder_token()})
         self.my_id = self.get_my_id()
 
     @retry_on_error
@@ -306,6 +290,7 @@ class TinderClient:
         parsed = [{'name': f"{user['user']['name']}",
                    'photos': [p['url'] for p in user['user']['photos']],
                    'id': user['user']['_id'],
+                   'age': user['user']['age'],
                    's_number': user['s_number']}
                   for user in data['data']['results']]
 
@@ -320,5 +305,17 @@ class TinderClient:
         try:
             data = response.json()
             assert data['status'] == 200, f'Cannot set like to {id}, response status code is {response.status_code}'
+        except Exception as e:
+            pass
+
+    @retry_on_error
+    def pass_girl(self, id, s_number):
+        url = f"https://api.gotinder.com/pass/{id}?locale=ru"
+        data = {"s_number": s_number}
+        response = requests.request("POST", url, headers=self.headers, data=data, timeout=1)
+
+        try:
+            data = response.json()
+            assert data['status'] == 200, f'Cannot pass girl {id}, response status code is {response.status_code}'
         except Exception as e:
             pass

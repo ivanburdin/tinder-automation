@@ -1,3 +1,4 @@
+import random
 import time
 from datetime import datetime
 
@@ -19,6 +20,10 @@ class TinderHandler:
             likes_today_set = StatisticsDb.get_statistics_for_today().likes_count
             likes_limit_day = SettingsProvider.get_settings()['likes_per_day_max']
             swipes_delay_multiplier = SettingsProvider.get_settings()['swipes_delay_multiplier']
+            random_swipes_delay_multiplier = random.randint(3, 20)/10
+
+            girl_age_min = SettingsProvider.get_settings()['girl_age_min']
+            girl_age_max = SettingsProvider.get_settings()['girl_age_max']
 
             current_hour = datetime.now().hour
             permit_likes_hours = [x['hour'] for x in SettingsProvider.get_settings()['permit_like_hours']]
@@ -33,9 +38,13 @@ class TinderHandler:
 
                 girls = self.client.get_girls_for_likes()
                 for girl in girls:
-                    self.client.set_like(girl['id'], girl['s_number'])
-                    # print(f"set like to {girl['name']}")
-                    time.sleep(delay_for_current_hour / 1000 * swipes_delay_multiplier)
+
+                    if girl_age_min <= int(girl['age']) <= girl_age_max:
+                        self.client.set_like(girl['id'], girl['s_number'])
+                    else:
+                        self.client.pass_girl(girl['id'], girl['s_number'])
+
+                    time.sleep(delay_for_current_hour / 1000 * swipes_delay_multiplier * random_swipes_delay_multiplier)
                 StatisticsDb.increase_likes(len(girls))
 
             time.sleep(1)
