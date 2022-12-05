@@ -40,7 +40,7 @@ class TinderHandler:
 
                     if girl_age_min <= int(girl['age']) <= girl_age_max:
                         self.client.set_like(girl['id'], girl['s_number'])
-                        StatisticsDb.increase_likes(len(girls))
+                        StatisticsDb.increase_likes(1)
                     else:
                         self.client.pass_girl(girl['id'], girl['s_number'])
 
