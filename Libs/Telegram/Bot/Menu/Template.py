@@ -13,11 +13,13 @@ class MenuTemplate:
     def main_menu_keyboard(match: Match):
         cbd_delete_match = f"delete_m/{match.match_id}/{match.photos_count}"
         cbd_continue_chat = f"continue_cht/{match.match_id}/{match.photos_count}"
+        cbd_send_tg = f"snd_tg_cht/{match.match_id}/{match.photos_count}"
         cbd_originals = f"originals/{match.match_id}"
         cbd_delete_post = f"delete_post/{match.match_id}/{match.photos_count}"
 
         keyboard = [
             [InlineKeyboardButton('Delete Match', callback_data=cbd_delete_match)],
+            [InlineKeyboardButton('Send tg', callback_data=cbd_send_tg)],
             [InlineKeyboardButton('Continue chat', callback_data=cbd_continue_chat)],
             [InlineKeyboardButton('View Original Photos', callback_data=cbd_originals)],
             [InlineKeyboardButton('Delete this post', callback_data=cbd_delete_post)]]

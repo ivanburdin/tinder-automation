@@ -4,6 +4,7 @@ from Libs.Db.StatisticsDb import StatisticsDb
 from Libs.Db.TinderDb import TinderDb
 from Services.ConversationHandler.ConversationFormatter import ConversationFormatter
 from Utils.ContactsRecognizer import ContactsRecognizer
+from Utils.SettingsProvider import SettingsProvider
 
 
 class NotificationQueue:
@@ -24,7 +25,7 @@ class NotificationQueue:
         search_strings.extend(girl_responses)
         contacts = ContactsRecognizer.get_contacts_from_strings(search_strings)
 
-        if len(contacts['ig'] + contacts['tg'] + contacts['wa']) == 0:
+        if len(contacts['ig'] + contacts['tg'] + contacts['wa']) == 0 and not SettingsProvider.get_settings()["ignore_contacts_found_for_continuing_chat"]:
             return False
 
         pretty_conversation = ConversationFormatter.format(tinder_client.my_id, user_info['name'], whole_conversation)
@@ -44,7 +45,7 @@ class NotificationQueue:
                   'whatsapp': json.dumps(contacts['wa'], ensure_ascii=False),
                   'notification_status': 'new'}
 
-        TinderDb.add_to_notification_queue(**dbdata)
+        TinderDb.upsert_to_notification_queue(**dbdata)
 
         StatisticsDb.increase_contacts_recieved()
         return True

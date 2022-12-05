@@ -20,7 +20,6 @@ class TinderHandler:
             likes_today_set = StatisticsDb.get_statistics_for_today().likes_count
             likes_limit_day = SettingsProvider.get_settings()['likes_per_day_max']
             swipes_delay_multiplier = SettingsProvider.get_settings()['swipes_delay_multiplier']
-            random_swipes_delay_multiplier = random.randint(3, 20)/10
 
             girl_age_min = SettingsProvider.get_settings()['girl_age_min']
             girl_age_max = SettingsProvider.get_settings()['girl_age_max']
@@ -41,11 +40,15 @@ class TinderHandler:
 
                     if girl_age_min <= int(girl['age']) <= girl_age_max:
                         self.client.set_like(girl['id'], girl['s_number'])
+                        StatisticsDb.increase_likes(len(girls))
                     else:
                         self.client.pass_girl(girl['id'], girl['s_number'])
 
-                    time.sleep(delay_for_current_hour / 1000 * swipes_delay_multiplier * random_swipes_delay_multiplier)
-                StatisticsDb.increase_likes(len(girls))
+                    random_swipes_delay_multiplier = random.randint(3, 30) / 10
+
+                    delay = delay_for_current_hour / 1000 * swipes_delay_multiplier * random_swipes_delay_multiplier
+                    print(delay)
+                    time.sleep(delay)
 
             time.sleep(1)
 

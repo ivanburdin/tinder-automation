@@ -14,6 +14,12 @@ class MessageProvider:
             return messages['tinder']['messages']
 
     @staticmethod
+    def get_my_contacts_tg():
+        with open(FILE_PATH) as f:
+            messages = json.load(f)
+            return messages['tinder']['my_contacts_tg']
+
+    @staticmethod
     def notification_threshold():
         with open(FILE_PATH) as f:
             messages = json.load(f)

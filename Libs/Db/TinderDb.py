@@ -167,11 +167,20 @@ class TinderDb:
         return match_in_db.whatsapp
 
     @staticmethod
-    def add_to_notification_queue(**kwargs):
+    def upsert_to_notification_queue(**kwargs):
         match = Match(**kwargs)
         session = TinderDb._session_maker()
         try:
-            session.add(match)
+            db_match = session.query(Match).filter_by(match_id=match.match_id).first()
+
+            if db_match:
+                session.query(Match)\
+                    .filter_by(match_id=match.match_id)\
+                    .update(kwargs)
+
+            else:
+                session.add(match)
+
             session.commit()
         except:
             pass

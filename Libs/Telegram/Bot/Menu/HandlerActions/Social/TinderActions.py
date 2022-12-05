@@ -42,6 +42,20 @@ class TinderActions:
 
         TinderDb.delete_match(match_id)
 
+    def send_contacts_in_chat(self, update: Update, context: CallbackContext):
+        _, match_id, photos_count = context.match.group().split('/')
+
+        chat_id = update.callback_query.message.chat_id
+        buttons_message_id = update.callback_query.message.message_id
+
+        self.telegram_bot_instance.bot_actions.cleanup_chat(photos_count, buttons_message_id, chat_id)
+
+        ConversationHandler.send_my_tg_to_chat(tinder_client=self.tinder_handler.client, match_id=match_id)
+
+        StatisticsDb.derease_contacts_recieved()
+
+        TinderDb.delete_match(match_id)
+
     def view_original_photos(self, update: Update, context: CallbackContext):
         match_id = context.match.group().split('/')[1]
         match = TinderDb.get_match(match_id)

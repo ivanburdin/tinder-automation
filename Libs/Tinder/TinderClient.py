@@ -14,9 +14,26 @@ from Utils.SettingsProvider import SettingsProvider
 
 class TinderClient:
     def __init__(self):
-        self.requests_delay_ms = 2500
-        self.headers = SettingsProvider.get_tinder_headers()
-        self.headers.update({"X-Auth-Token": SecretsProvider.get_tinder_token()})
+        self.requests_delay_ms = 3000
+
+        self.headers = {"Host": "api.gotinder.com",
+                        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:103.0) Gecko/20100101 Firefox/103.0",
+                        "Accept": "application/json",
+                        "Accept-Language": "ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3",
+                        "Accept-Encoding": "gzip, deflate, br",
+                        "Content-Type": "application/json",
+                        "app-version": "1027301",
+                        "tinder-version": "3.38.0",
+                        "x-supported-image-formats": "jpeg",
+                        "platform": "web",
+                        "x-auth-token": SecretsProvider.get_tinder_token(),
+                        "Origin": "https://tinder.com",
+                        "Pragma": "no-cache",
+                        "Cache-Control": "no-cache",
+                        "Referer": "https://tinder.com/",
+                        "Connection": "keep-alive",
+                        "TE": "Trailers"}
+
         self.my_id = self.get_my_id()
 
     @retry_on_error
@@ -64,7 +81,8 @@ class TinderClient:
     def delete_match(self, match_id):
         time.sleep(100 / 1000)
 
-        response = requests.delete(f'https://api.gotinder.com/user/matches/{match_id}?locale=ru', headers=self.headers, timeout=1)
+        response = requests.delete(f'https://api.gotinder.com/user/matches/{match_id}?locale=ru', headers=self.headers,
+                                   timeout=1)
 
         # assert response.status_code == 200, f"Cannot delete match, code: {response.status_code}, content: {response.content}"
 
@@ -151,14 +169,17 @@ class TinderClient:
 
         person = data['results']
 
-        job_name = ' '.join([x['title']['name'] for x in person['jobs']]) if person.get('jobs') and person['jobs'][0].get('title') else ''
-        job_company = ' '.join([x['company']['name'] for x in person['jobs']]) if person.get('jobs') and person['jobs'][0].get('company') else ''
+        job_name = ' '.join([x['title']['name'] for x in person['jobs']]) if person.get('jobs') and person['jobs'][
+            0].get('title') else ''
+        job_company = ' '.join([x['company']['name'] for x in person['jobs']]) if person.get('jobs') and person['jobs'][
+            0].get('company') else ''
 
         school = ''.join([x['name'] for x in person.get('schools', [])])
 
         distance = round(person['distance_mi'] * 1.8)
 
-        interests = [x['name'] for x in person['user_interests']['selected_interests']] if person.get('user_interests') else []
+        interests = [x['name'] for x in person['user_interests']['selected_interests']] if person.get(
+            'user_interests') else []
 
         bd = '1901-01-01'
         if person.get('birth_date'):
@@ -175,7 +196,7 @@ class TinderClient:
         if person.get('selected_descriptors'):
 
             zodiaс_set = [x for x in person['selected_descriptors'] if x['name'] == 'Знак зодиака']
-            if(zodiaс_set):
+            if (zodiaс_set):
                 zodiac = zodiaс_set[0]['choice_selections'][0]['name']
 
             smoke_set = [x for x in person['selected_descriptors'] if x['name'] == 'Курение']
@@ -287,12 +308,19 @@ class TinderClient:
         if 'results' not in data['data']:
             return []
 
-        parsed = [{'name': f"{user['user']['name']}",
-                   'photos': [p['url'] for p in user['user']['photos']],
-                   'id': user['user']['_id'],
-                   'age': user['user']['age'],
-                   's_number': user['s_number']}
-                  for user in data['data']['results']]
+        parsed = []
+
+        for user in data['data']['results']:
+
+            year = datetime.strptime(user['user']['birth_date'].split("T")[0], "%Y-%M-%d").year - 1 if "birth_date" in user[ 'user'] else 1998
+
+            age = datetime.now().year - year
+
+            parsed.append({'name': f"{user['user']['name']}",
+                           'photos': [p['url'] for p in user['user']['photos']],
+                           'id': user['user']['_id'],
+                           'age': age,
+                           's_number': user['s_number']})
 
         return parsed
 

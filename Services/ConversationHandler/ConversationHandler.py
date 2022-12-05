@@ -53,6 +53,11 @@ class ConversationHandler:
         if (replicas_sent_quantity + 1) <= len(replicas_for_tinder):
             tinder_client.send_message(match_id, replicas_for_tinder[replicas_sent_quantity])
 
+
+    @staticmethod
+    def send_my_tg_to_chat(tinder_client, match_id):
+        tinder_client.send_message(match_id, MessageProvider.get_my_contacts_tg())
+
     @staticmethod
     def _replica_was_replied(whole_conversation, client, replied_counter):
         if replied_counter == 0:
