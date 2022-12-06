@@ -38,7 +38,8 @@ class MessengersActions:
 
             return button
 
-        if not [b for b in new_reply_markup.inline_keyboard if 'telegram' in b.callback_data and '✅' in b.text]:
+        already_edited_markup = len([b for b in new_reply_markup.inline_keyboard if 'telegram' in b[0].callback_data and '✅' in b[0].text]) > 0
+        if not already_edited_markup:
 
             new_reply_markup.inline_keyboard = [filter_and_update_buttons(b) for b in new_reply_markup.inline_keyboard]
 
