@@ -38,12 +38,14 @@ class MessengersActions:
 
             return button
 
-        new_reply_markup.inline_keyboard = [filter_and_update_buttons(b) for b in new_reply_markup.inline_keyboard]
+        if not [b for b in new_reply_markup.inline_keyboard if 'telegram' in b.callback_data and '✅' in b.text]:
 
-        self.telegram_bot_instance.bot.edit_message_reply_markup(
-            chat_id=update.callback_query.message.chat_id,
-            message_id=update.callback_query.message.message_id,
-            reply_markup=new_reply_markup)
+            new_reply_markup.inline_keyboard = [filter_and_update_buttons(b) for b in new_reply_markup.inline_keyboard]
+
+            self.telegram_bot_instance.bot.edit_message_reply_markup(
+                chat_id=update.callback_query.message.chat_id,
+                message_id=update.callback_query.message.message_id,
+                reply_markup=new_reply_markup)
 
         self.tinder_handler.client.send_message(match_id, MessageProvider.message_that_i_wrote_tg())
 
