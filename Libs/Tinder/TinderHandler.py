@@ -38,7 +38,7 @@ class TinderHandler:
                 girls = self.client.get_girls_for_likes()
                 for girl in girls:
 
-                    set_like = random.randint(0, 100) > SettingsProvider.get_settings()['like_percent']
+                    set_like = random.randint(0, 100) < SettingsProvider.get_settings()['like_percent']
 
                     if girl_age_min <= int(girl['age']) <= girl_age_max and set_like:
                         self.client.set_like(girl['id'], girl['s_number'])
