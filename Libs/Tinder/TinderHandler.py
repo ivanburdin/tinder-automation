@@ -38,13 +38,15 @@ class TinderHandler:
                 girls = self.client.get_girls_for_likes()
                 for girl in girls:
 
-                    if girl_age_min <= int(girl['age']) <= girl_age_max:
+                    set_like = random.randint(0, 100) > SettingsProvider.get_settings()['like_percent']
+
+                    if girl_age_min <= int(girl['age']) <= girl_age_max and set_like:
                         self.client.set_like(girl['id'], girl['s_number'])
                         StatisticsDb.increase_likes(1)
-                        action = 'like'
+                        action = f'like - {girl}'
                     else:
                         self.client.pass_girl(girl['id'], girl['s_number'])
-                        action = 'pass'
+                        action = f'pass - {girl}'
 
                     random_swipes_delay_multiplier = random.randint(3, 30) / 10
 
