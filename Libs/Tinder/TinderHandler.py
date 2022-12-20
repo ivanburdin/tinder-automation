@@ -38,6 +38,10 @@ class TinderHandler:
                 girls = self.client.get_girls_for_likes()
                 for girl in girls:
 
+                    random_swipes_delay_multiplier = random.randint(3, 30) / 10
+                    delay = delay_for_current_hour / 1000 * swipes_delay_multiplier * random_swipes_delay_multiplier
+                    time.sleep(delay)
+
                     set_like = random.randint(0, 100) < SettingsProvider.get_settings()['like_percent']
 
                     if girl_age_min <= int(girl['age']) <= girl_age_max and set_like:
@@ -48,11 +52,8 @@ class TinderHandler:
                         self.client.pass_girl(girl['id'], girl['s_number'])
                         action = f'pass - {girl["name"]} - {girl["age"]}'
 
-                    random_swipes_delay_multiplier = random.randint(3, 30) / 10
-
-                    delay = delay_for_current_hour / 1000 * swipes_delay_multiplier * random_swipes_delay_multiplier
                     print(f"{action} delay {int(delay)} s")
-                    time.sleep(delay)
+
 
             time.sleep(1)
 
@@ -61,7 +62,8 @@ class TinderHandler:
             matches = self.client.get_matches()
             time.sleep(SettingsProvider.get_settings()['start_conversations_loop_interval_sec'])
             for match in matches:
-                self.client.send_message(match['id'], MessageProvider.messages_for_tinder()[0])
+                start_message = random.choice(MessageProvider.messages_for_tinder()[0])
+                self.client.send_message(match['id'], start_message)
 
             StatisticsDb.increase_new_matches(len(matches))
 

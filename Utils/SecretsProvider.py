@@ -37,3 +37,29 @@ class SecretsProvider:
             secrets = json.load(f)
             return secrets['telegram_bot_token']
 
+    @staticmethod
+    def get_tinder_headers():
+        with open(os.path.abspath(os.path.join(FOLDER_NAME, 'TinderHeaders.txt'))) as f:
+            content = f.read()
+            lines = [l.strip() for l in content.split('\n')]
+
+            headers = {
+                "os-version": "",
+                "persistent-device-id": "",
+                "user-agent": "",
+                "x-hubble-entity-id": "",
+                "x-auth-token": "",
+                "platform": "",
+                "app-session-id": "",
+                "app-version": "",
+                "user-session-id": "",
+            }
+
+            for l in lines:
+                header_name, header_value = l.split('\t')
+
+                if header_name in headers:
+                    headers[header_name] = header_value
+
+
+            return headers

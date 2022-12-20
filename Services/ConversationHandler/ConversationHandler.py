@@ -1,3 +1,5 @@
+import random
+
 from Libs.Db.StatisticsDb import StatisticsDb
 from Libs.Db.TinderDb import TinderDb
 from Services.MessageProvider.MessageProvider import MessageProvider
@@ -20,7 +22,7 @@ class ConversationHandler:
         replicas_sent_quantity = ConversationHandler._count_my_replicas_sent(whole_conversation, tinder_client)
 
         if replicas_sent_quantity == 0:
-            tinder_client.send_message(match_id, replicas_for_tinder[0])
+            tinder_client.send_message(match_id, random.choice(replicas_for_tinder[0]))
             StatisticsDb.increase_new_matches()  # i did not send anything but conversation exists, so she was first
             return
 
@@ -42,7 +44,7 @@ class ConversationHandler:
                 here we continue chat until get contact
                 '''
 
-            tinder_client.send_message(match_id, replicas_for_tinder[replicas_sent_quantity])
+            tinder_client.send_message(match_id, random.choice(replicas_for_tinder[replicas_sent_quantity]))
 
     @staticmethod
     def continue_chat(tinder_client, match_id):
