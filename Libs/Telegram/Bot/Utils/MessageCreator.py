@@ -9,6 +9,7 @@ class MessageCreator:
     def make_post_message(match):
 
         message = f'{match.name}\n\n' \
+                  f"{match.interests}" \
                   f"{re.sub(r'[`<>]', ' ', match.bio)}"
 
         if match.instagram:

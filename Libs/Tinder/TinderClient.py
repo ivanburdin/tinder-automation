@@ -227,9 +227,6 @@ class TinderClient:
         if distance:
             bio += f"\n🧭 {distance} km" if person['distance_mi'] < 10000 else '\n🧭 скрыто'
 
-        if interests:
-            bio += f"\nИнтересы: {', '.join(interests)}"
-
         if zodiac:
             bio += f"\n✨ {zodiac}"
 
@@ -246,6 +243,7 @@ class TinderClient:
                 'name': person['name'],
                 'birth_date': bd,
                 'age': age,
+                'interests': f"\nИнтересы: {', '.join(interests)}" if interests else '',
                 'bio': bio,
                 'photos': [p['processedFiles'][0]['url'] for p in person['photos']],
                 'photos_orig': [p['url'] for p in person['photos']]}

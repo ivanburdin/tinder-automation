@@ -13,6 +13,7 @@ class Match(Base):
     name = Column(String(50))
     birth_date = Column(String(50))
     age = Column(Integer)
+    interests = Column(String(1000))
     bio = Column(String(1000))
     photos = Column(String(5000))
     photos_orig = Column(String(5000))
@@ -29,6 +30,7 @@ class Match(Base):
                f",name={self.name}" \
                f",birth_date={self.birth_date}" \
                f",age={self.age}" \
+               f",interests={self.interests}" \
                f",bio={self.bio}" \
                f",photos={self.photos}" \
                f",photos_orig={self.photos_orig}" \
@@ -146,6 +148,7 @@ class TinderDb:
     def get_match_tgs(match_id):
         match_in_db = None
         session = TinderDb._session_maker()
+
         try:
             match_in_db = session.query(Match).filter_by(match_id=match_id).first()
         except:

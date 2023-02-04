@@ -34,6 +34,7 @@ class NotificationQueue:
                   'user_id': user_info['id'],
                   'name': user_info['name'],
                   'birth_date': user_info['birth_date'],
+                  'interests': user_info['interests'],
                   'bio': user_info['bio'],
                   'age': user_info['age'],
                   'photos': '\n\n'.join(user_info['photos']),
