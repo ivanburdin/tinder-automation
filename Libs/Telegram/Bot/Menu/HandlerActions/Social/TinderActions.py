@@ -28,6 +28,18 @@ class TinderActions:
         TinderDb.delete_match(match_id)
         self.tinder_handler.client.delete_match(match_id)
 
+    def update_post(self, update: Update, context: CallbackContext):
+        callback_data = context.match.group().split('/')
+        match_id = callback_data[1]
+        photos_count = callback_data[2]
+
+        chat_id = update.callback_query.message.chat_id
+        buttons_message_id = update.callback_query.message.message_id
+
+        self.telegram_bot_instance.bot_actions.cleanup_chat(photos_count, buttons_message_id, chat_id)
+
+        TinderDb.delete_match(match_id)
+
     def continue_chat(self, update: Update, context: CallbackContext):
         _, match_id, photos_count = context.match.group().split('/')
 

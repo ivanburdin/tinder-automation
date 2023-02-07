@@ -69,6 +69,7 @@ class TelegramBot:
 
         # Tinder
         self.updater.dispatcher.add_handler(CallbackQueryHandler(self.tinder_actions.delete_match, pattern=r'delete_m/[\w/]+'))
+        self.updater.dispatcher.add_handler(CallbackQueryHandler(self.tinder_actions.update_post, pattern=r'update_p/[\w/]+'))
         self.updater.dispatcher.add_handler(CallbackQueryHandler(self.tinder_actions.send_contacts_in_chat, pattern=r'snd_tg_cht/[\w/]+'))
         self.updater.dispatcher.add_handler(CallbackQueryHandler(self.tinder_actions.continue_chat, pattern=r'continue_cht/[\w/]+'))
         self.updater.dispatcher.add_handler(CallbackQueryHandler(self.tinder_actions.view_original_photos, pattern=r'originals/[\w]+'))

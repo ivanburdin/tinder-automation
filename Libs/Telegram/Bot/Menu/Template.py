@@ -12,6 +12,7 @@ class MenuTemplate:
     @staticmethod
     def main_menu_keyboard(match: Match):
         cbd_delete_match = f"delete_m/{match.match_id}/{match.photos_count}"
+        cbd_update_post = f"update_p/{match.match_id}/{match.photos_count}"
         cbd_continue_chat = f"continue_cht/{match.match_id}/{match.photos_count}"
         cbd_send_tg = f"snd_tg_cht/{match.match_id}/{match.photos_count}"
         cbd_originals = f"originals/{match.match_id}"
@@ -19,6 +20,7 @@ class MenuTemplate:
 
         keyboard = [
             [InlineKeyboardButton('Delete Match', callback_data=cbd_delete_match)],
+            [InlineKeyboardButton('Update Post', callback_data=cbd_update_post)],
             [InlineKeyboardButton('Send tg', callback_data=cbd_send_tg)],
             [InlineKeyboardButton('Continue chat', callback_data=cbd_continue_chat)],
             [InlineKeyboardButton('View Original Photos', callback_data=cbd_originals)],
