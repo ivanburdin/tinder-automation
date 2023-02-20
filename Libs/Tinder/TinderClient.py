@@ -213,7 +213,7 @@ class TinderClient:
 
         bio = ""
 
-        bio += f"Возраст: {str(age)}" if age < 100 else "Возраст: скрыт"
+        bio += f"\nВозраст: {str(age)}" if age < 100 else "Возраст: скрыт"
 
         if job_name:
             bio += f"\n💼 {job_name} {job_company}"
