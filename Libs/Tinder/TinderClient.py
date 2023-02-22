@@ -197,15 +197,15 @@ class TinderClient:
 
         if person.get('selected_descriptors'):
 
-            zodiaс_set = [x for x in person['selected_descriptors'] if x['name'] == 'Знак зодиака']
+            zodiaс_set = [x for x in person['selected_descriptors'] if x.get('name') == 'Знак зодиака']
             if (zodiaс_set):
                 zodiac = zodiaс_set[0]['choice_selections'][0]['name']
 
-            smoke_set = [x for x in person['selected_descriptors'] if x['name'] == 'Курение']
+            smoke_set = [x for x in person['selected_descriptors'] if x.get('name') == 'Курение']
             if (smoke_set):
                 smoke = smoke_set[0]['choice_selections'][0]['name']
 
-            pets_set = [x for x in person['selected_descriptors'] if x['name'] == 'Питомцы']
+            pets_set = [x for x in person['selected_descriptors'] if x.get('name') == 'Питомцы']
             if (pets_set):
                 pets = pets_set[0]['choice_selections'][0]['name']
 
