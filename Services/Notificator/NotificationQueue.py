@@ -21,7 +21,7 @@ class NotificationQueue:
             return False
 
         search_strings = []
-        search_strings.append(user_info['bio'])
+        search_strings.append(user_info['description'])
         search_strings.extend(girl_responses)
         contacts = ContactsRecognizer.get_contacts_from_strings(search_strings)
 
