@@ -282,6 +282,12 @@ class TinderClient:
         url = "https://api.gotinder.com/v2/recs/core?locale=ru"
         payload = {}
         response = requests.request("GET", url, headers=self.headers, data=payload, timeout=1)
+
+        if response.status_code == 429:
+            time.sleep(20)
+            print('response 429 while getting girls')
+            return []
+
         assert response.status_code == 200, f'Cannot get girls, code: {response.status_code}, content: {response.content}'
 
         data = response.json()
