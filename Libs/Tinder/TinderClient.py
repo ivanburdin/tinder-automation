@@ -285,7 +285,7 @@ class TinderClient:
 
         if response.status_code == 429:
             print('response 429 while getting girls')
-            time.sleep(20)
+            time.sleep(120)
             return []
 
         assert response.status_code == 200, f'Cannot get girls, code: {response.status_code}, content: {response.content}'
