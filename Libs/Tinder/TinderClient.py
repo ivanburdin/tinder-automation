@@ -284,8 +284,8 @@ class TinderClient:
         response = requests.request("GET", url, headers=self.headers, data=payload, timeout=1)
 
         if response.status_code == 429:
-            time.sleep(20)
             print('response 429 while getting girls')
+            time.sleep(20)
             return []
 
         assert response.status_code == 200, f'Cannot get girls, code: {response.status_code}, content: {response.content}'
