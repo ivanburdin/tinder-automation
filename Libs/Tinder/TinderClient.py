@@ -8,6 +8,7 @@ from dateutil.relativedelta import relativedelta
 from Libs.Db.StatisticsDb import StatisticsDb
 from Libs.Db.TinderDb import TinderDb
 from Libs.Tinder.RetryOnError import retry_on_error
+from Utils.HeightUtility import HeightUtility
 from Utils.SecretsProvider import SecretsProvider
 from Utils.SettingsProvider import SettingsProvider
 
@@ -299,9 +300,13 @@ class TinderClient:
 
         for user in data['data']['results']:
 
-            year = datetime.strptime(user['user']['birth_date'].split("T")[0], "%Y-%M-%d").year - 1 if "birth_date" in user[ 'user'] else 1998
+            if not HeightUtility.fits(user):
+                continue
 
+            year = datetime.strptime(user['user']['birth_date'].split("T")[0], "%Y-%M-%d").year - 1 if "birth_date" in user['user'] else 1998
             age = datetime.now().year - year
+            if not(SettingsProvider.get_settings()['girl_age_min'] <= age <= SettingsProvider.get_settings()['girl_age_max']):
+                continue
 
             parsed.append({'name': f"{user['user']['name']}",
                            'photos': [p['url'] for p in user['user']['photos']],
